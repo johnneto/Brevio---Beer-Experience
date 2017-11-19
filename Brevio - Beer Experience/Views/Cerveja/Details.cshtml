@@ -1,0 +1,66 @@
+﻿@model Brevio___Beer_Experience.Models.Cerveja
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Cerveja</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.nome)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nome)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.abv)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.abv)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ibu)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ibu)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.srm)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.srm)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.descricao)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.descricao)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.img)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.img)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
