@@ -303,7 +303,6 @@
     <Content Include="Views\Cervejaria\Details.cshtml" />
     <Content Include="Views\Cervejaria\Edit.cshtml" />
     <Content Include="Views\Cervejaria\Index.cshtml" />
-    <Content Include="Views\Cerveja\SelectEstilo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

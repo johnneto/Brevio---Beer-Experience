@@ -55,10 +55,10 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.img)
+            <img src="../@Html.DisplayFor(model => model.img)" height="200" />
         </dd>
-
-    </dl>
+</dl>
+        
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |

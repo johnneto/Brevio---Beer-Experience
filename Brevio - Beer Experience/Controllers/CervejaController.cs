@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Brevio___Beer_Experience.Models;
 using Brevio___Beer_Experience.DAL;
+using System.IO;
 
 namespace Brevio___Beer_Experience.Controllers
 {
@@ -39,18 +40,45 @@ namespace Brevio___Beer_Experience.Controllers
         // GET: Cerveja/Create
         public ActionResult Create()
         {
+            List<Estilo> listaestilos = new List<Estilo>();
+            listaestilos = EstiloDAO.ListarEstilos();
+            ViewBag.EstiloId = new SelectList(listaestilos, "id", "nome");
+
+            List<Cervejaria> listacervejarias = new List<Cervejaria>();
+            listacervejarias = CervejariaDAO.ListarCervejarias();
+            ViewBag.CervejariaId = new SelectList(listacervejarias, "id", "nome");
+
             return View();
         }
+
+      
 
         // POST: Cerveja/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,cervejaria_id,usuario_id,estilo_id,nome,abv,ibu,srm,descricao,img,ult_modificacao")] Cerveja cerveja)
+        public ActionResult Create([Bind(Include = "id,cervejaria_id,usuario_id,estilo_id,nome,abv,ibu,srm,descricao,img,ult_modificacao")] Cerveja cerveja, int EstiloId, int CervejariaId, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
+                if (file != null)
+                {
+                    string pic = System.IO.Path.GetFileName(file.FileName);
+                    string path = System.IO.Path.Combine(
+                                           Server.MapPath("~/images"), pic);
+                    // file is uploaded
+                    file.SaveAs(path);
+                    cerveja.img = ("../images/"+file.FileName);
+                }
+
+                String email = Session["email"].ToString();
+                cerveja.estilo_id = EstiloId;
+                cerveja.cervejaria_id = CervejariaId;
+                Usuario usuario = UsuarioDAO.BuscarUsuarioPorEmail(email);
+                cerveja.usuario_id = usuario.id;
+                cerveja.ult_modificacao = DateTime.Now;
+
                 CervejaDAO.CadastrarCerveja(cerveja);
                 return RedirectToAction("Index");
             }
@@ -78,10 +106,27 @@ namespace Brevio___Beer_Experience.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,cervejaria_id,usuario_id,estilo_id,nome,abv,ibu,srm,descricao,img,ult_modificacao")] Cerveja cerveja)
+        public ActionResult Edit([Bind(Include = "id,cervejaria_id,usuario_id,estilo_id,nome,abv,ibu,srm,descricao,img,ult_modificacao")] Cerveja cerveja, int EstiloId, int CervejariaId, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
+                if (file != null)
+                {
+                    string pic = System.IO.Path.GetFileName(file.FileName);
+                    string path = System.IO.Path.Combine(
+                                           Server.MapPath("~/images"), pic);
+                    // file is uploaded
+                    file.SaveAs(path);
+                    cerveja.img = ("../images/" + file.FileName);
+                }
+
+                String email = Session["email"].ToString();
+                cerveja.estilo_id = EstiloId;
+                cerveja.cervejaria_id = CervejariaId;
+                Usuario usuario = UsuarioDAO.BuscarUsuarioPorEmail(email);
+                cerveja.usuario_id = usuario.id;
+                cerveja.ult_modificacao = DateTime.Now;
+
                 ctx.Entry(cerveja).State = EntityState.Modified;
                 ctx.SaveChanges();
                 return RedirectToAction("Index");
